@@ -1,0 +1,22 @@
+.background {
+	width: 100%;
+	min-height: 100%;
+	position: fixed;
+	background: #FAFAFA;
+	z-index: -3;
+
+	& > .todo__head {
+		background: url("../../img/bg-desktop-light.jpg");
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: left center;
+		z-index: -1;
+		position: absolute;
+		width: 100%;
+		height: calc(300 / 800 * 100%);
+	}
+
+	
+
+
+}

@@ -1,0 +1,20 @@
+{
+  "name": "new-todo-react-redux",
+  "version": "1.0.0",
+  "description": "todo test task in UpTrader company",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/surenkov1985/new-todo-react-redux.git"
+  },
+  "author": "surenkov1985@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/surenkov1985/new-todo-react-redux/issues"
+  },
+  "homepage": "https://github.com/surenkov1985/new-todo-react-redux#readme",
+  "dependencies": {}
+}
