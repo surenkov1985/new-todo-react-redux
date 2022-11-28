@@ -1,19 +1,28 @@
-import React, { useState } from "react";
-import { connect, useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectProject } from "../redux/projects/actions";
 import { themeToggle } from "../redux/theme/actions";
 import Button from "./Button";
+import { BsFillMoonFill, BsFillSunFill } from "react-icons/bs";
 
 function Header(props) {
+    const sunBtn = <BsFillSunFill size={26} color="#FFF" />;
+	const moonBtn = <BsFillMoonFill size={26} color="#FFF" />;
+	const { theme } = useSelector((state) => state.themeReducer);
+	const dispatch = useDispatch();
+
 	function buttonHandler() {
-		document.body.classList.toggle("dark");
+		dispatch(themeToggle());
 	}
 
-	const dispatch = useDispatch();
+	useEffect(() => {
+		localStorage.setItem("todo-theme", theme);
+	}, [theme]);
 
 	const linkHandler = () => {
 		dispatch(selectProject(null));
+		localStorage.removeItem("selected-project");
 	};
 
 	return (
@@ -35,9 +44,9 @@ function Header(props) {
 				)}
 				<Button
 					classList={["todo__theme-btn"]}
-					text={props.icon}
+					text={theme === "dark" ? sunBtn : moonBtn}
 					onClick={() => {
-						props.onThemeToggle();
+						// props.onThemeToggle();
 						buttonHandler();
 					}}
 				/>
@@ -46,17 +55,4 @@ function Header(props) {
 	);
 }
 
-function mapStateToProps(state) {
-	const { themeReducer } = state;
-	return {
-		icon: themeReducer.icon,
-	};
-}
-
-function mapDispatchToProps(dispatch) {
-	return {
-		onThemeToggle: () => dispatch(themeToggle()),
-	};
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

@@ -1,9 +1,11 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 
 export default function Project(props) {
-	const location = useLocation();
-	const project = location.state.from;
+    const [project, setProject] = useState()
+
+    useEffect(() => {
+        setProject(JSON.parse(localStorage.getItem("selected-project")))
+    },[])
 
 	console.log(project);
 

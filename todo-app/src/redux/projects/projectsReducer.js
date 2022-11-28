@@ -1,4 +1,4 @@
-import { CREATE_PROJECT, SELECT_PROJECT } from "./types";
+import { CREATE_PROJECT, SELECT_PROJECT, SET_PROJECTS } from "./types";
 import uniqid from "uniqid";
 
 const initialState = {
@@ -8,9 +8,9 @@ const initialState = {
 
 export const projectsReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case SET_OBJECTS:
+		case SET_PROJECTS:
 			return { ...state, projects: action.arr };
-            
+
 		case CREATE_PROJECT:
 			return { ...state, projects: [...state.projects, action.path] };
 
