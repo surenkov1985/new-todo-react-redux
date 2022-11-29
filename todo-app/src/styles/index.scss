@@ -1,19 +1,26 @@
 @import "utils/fonts";
 @import "utils/reset";
 @import "utils/vars";
+@import "blocks/header.scss";
 @import "blocks/todo";
+@import "blocks/status.scss";
 @import "utils/dark-theme";
+@import "blocks/modal.scss";
 
 @import "blocks/background";
 
-body {
-    width: 100%;
-    min-width: $phoneWidth;
-    height: 100vh;
+* {
     font-family: $mainFont;
+    transition: all 0.3s;
 }
 
-#app {
+body {
+    width: 100%;
+    height: 100vh;
+    min-width: $phoneWidth;
+}
+
+#root {
     width: 100%;
     height: 100%;
 }
@@ -21,5 +28,6 @@ body {
 .container {
     width: 100%;
     height: 100%;
-
+    display: flex;
+    flex-direction: column;
 }

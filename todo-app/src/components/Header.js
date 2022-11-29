@@ -7,14 +7,17 @@ import Button from "./Button";
 import { BsFillMoonFill, BsFillSunFill } from "react-icons/bs";
 
 function Header(props) {
-    const sunBtn = <BsFillSunFill size={26} color="#FFF" />;
+	const sunBtn = <BsFillSunFill size={26} color="#FFF" />;
 	const moonBtn = <BsFillMoonFill size={26} color="#FFF" />;
 	const { theme } = useSelector((state) => state.themeReducer);
+	const { selectedProject } = useSelector((state) => state.projectsReducer);
 	const dispatch = useDispatch();
 
 	function buttonHandler() {
 		dispatch(themeToggle());
 	}
+
+	console.log(selectedProject);
 
 	useEffect(() => {
 		localStorage.setItem("todo-theme", theme);
@@ -26,15 +29,15 @@ function Header(props) {
 	};
 
 	return (
-		<div className="todo__head">
-			<div className="todo__title">
+		<div className="header">
+			<div className="header__title">
 				<h1>TODO</h1>
 			</div>
-			<div className="todo__head-control">
-				{props.project && (
+			<div className="header__control">
+				{selectedProject && (
 					<Link
-						className={"todo__header-link"}
-						to=""
+						className={"header__link"}
+						to="select_project"
 						onClick={(e) => {
 							linkHandler();
 						}}
@@ -43,10 +46,9 @@ function Header(props) {
 					</Link>
 				)}
 				<Button
-					classList={["todo__theme-btn"]}
+					classList={["header__theme-btn"]}
 					text={theme === "dark" ? sunBtn : moonBtn}
 					onClick={() => {
-						// props.onThemeToggle();
 						buttonHandler();
 					}}
 				/>

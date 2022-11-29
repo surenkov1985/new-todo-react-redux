@@ -9,7 +9,16 @@
 	&__main {
 		width: 100%;
 		height: 100%;
+		display: flex;
+		flex-direction: column;
 		overflow-x: auto;
+		padding: 25px;
+	}
+
+	&__title {
+		font-size: 30px;
+		font-weight: 600;
+		color: $TextColor;
 	}
 
 	&__container {
@@ -18,7 +27,8 @@
 		display: flex;
 		align-items: flex-start;
 		column-gap: 30px;
-		padding: 25px;
+		padding: 25px 0;
+		position: relative;
 	}
 
 	&__block {
@@ -32,85 +42,81 @@
 		}
 	}
 
-	&__head {
-		height: 80 / 800 * 100%;
-		display: flex;
-		align-items: center;
-		padding: 25px;
-		justify-content: space-between;
-		background: url("../../img/bg-desktop-light.jpg");
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-position: left center;
-		box-shadow: 0px 4px 8px 0px rgba(34, 60, 80, 0.2);
-	}
-
-	&__header-link {
-		color: #FFFFFF;
-	}
-
-	&__head-control {
-		display: flex;
-		align-items: center;
-		column-gap: 10px;
-	}
-
-
-	&__title h1{
-		color: #FFFFFF;
-		font-size: 38px;
-		font-weight: 700;
-		letter-spacing: 16px;
-		margin-top: 8px;
-
-		@media (max-width: 460px) {
-			font-size: 30px;
-		}
-	}
-
-	&__theme-btn {
-		width: 40px;
-		height: 40px;
+	&__project-link {
+		width: 150px;
+		height: 100px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		background: $BgColor;
+		border: 2px solid $TextColor;
+		border-radius: 6px;
 		cursor: pointer;
-		transition:  all 0.1s;
 
 		&:hover {
-			 opacity: 0.6;
+			border-color: $BgColor;
+			background: $TextColor;
+
+			& .todo__link {
+				color: $BgColor;
+			}
 		}
 	}
 
-	&__create {
+	&__link {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		width: 100%;
-		height: 65px;
-		margin-top: 38px;
+		height: 100%;
+		color: $TextColor;
+		font-size: 20px;
+		cursor: pointer;
+	}
+
+
+
+	&__create {
+		width: 350px;
+		display: flex;
+		max-height: 100%;
+		flex-direction: column;
+		row-gap: 10px;
 		border-radius: 5px;
-		background: #FFFFFF;
-		padding: 10px 25px;
+		background: $BgColor;
+		padding: 15px;
 
 		@media (max-width: 500px) {
-			padding: 10px 15px;
+			padding: 15px;
 		}
 	}
 
 	&__create-form {
 		width: 100%;
-		height: 100%;
 		display: flex;
 		align-items: center;
+	}
+
+	&__form-btn {
+		width: 100%;
+		padding: 15px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		border-radius: 5px;
+		column-gap: 10px;
 	}
 
 	&__create-container {
 		width: 100%;
 		height: 100%;
-		display: grid;
-		grid-template-columns: 25px auto;
+		display: flex;
+		column-gap: 10px;
 		align-items: center;
 		position: relative;
 
-		&:hover > .todo__delete-btn {
+		&:hover>.modal__delete-btn {
 			display: block;
 		}
 	}
@@ -120,17 +126,19 @@
 		position: absolute;
 
 		&:checked {
-			& ~ .todo__false-check {
+			&~.todo__false-check {
 				background: linear-gradient(135deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
 
-				&:before {background: transparent}
+				&:before {
+					background: transparent
+				}
 			}
 
-			& ~ .todo__false-check > svg {
+			&~.todo__false-check>svg {
 				display: block;
 			}
-			
-			& ~ .todo__text {
+
+			&~.todo__text {
 				color: #D2D1D6;
 				text-decoration: line-through;
 			}
@@ -154,21 +162,22 @@
 			width: 20px;
 			height: 20px;
 
-			& > svg {
+			&>svg {
 				width: 8px;
 				height: 8px;
 			}
 		}
 
-		& > svg {
+		&>svg {
 			width: 10px;
 			display: none;
 		}
 
 		&:hover {
-			background: linear-gradient(135deg, #57ddff,#c058f3);
+			background: linear-gradient(135deg, #57ddff, #c058f3);
+
 			&:before {
-				content:  "";
+				content: "";
 				position: absolute;
 				top: 1px;
 				right: 1px;
@@ -180,19 +189,25 @@
 			}
 		}
 	}
+	&__create-label {
+		width: 100%;
+	}
 
 	&__input {
-		width: 95%;
+		width: 100%;
 		height: 100%;
 		font-size: $mainFontSize;
 		color: #525463;
-		padding: 0 25px;
+		border: 1px solid $InputColor;
+		border-radius: 5px;
+		padding: 10px 15px;
 		font-family: $mainFont;
 		font-weight: $regularWeight;
 
 		@media (max-width: 500px) {
 			padding: 0 15px;
 		}
+
 		@media (max-width: 460px) {
 			font-size: 14px;
 			padding: 0 5px;
@@ -202,15 +217,15 @@
 			color: transparent;
 		}
 
-		&:focus::-moz-placeholder          {
+		&:focus::-moz-placeholder {
 			color: transparent;
 		}
 
-		&:focus:-moz-placeholder           {
+		&:focus:-moz-placeholder {
 			color: transparent;
 		}
 
-		&:focus:-ms-input-placeholder      {
+		&:focus:-ms-input-placeholder {
 			color: transparent;
 		}
 	}
@@ -276,10 +291,12 @@
 			& .todo__false-check {
 				background: linear-gradient(135deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
 
-				&:before {background: transparent}
+				&:before {
+					background: transparent
+				}
 			}
 
-			& .todo__false-check > svg {
+			& .todo__false-check>svg {
 				display: block;
 			}
 
@@ -317,7 +334,7 @@
 		display: none;
 		transition: all 0.1s;
 
-		& > svg {
+		&>svg {
 			z-index: -1;
 
 			@media (max-width: 460px) {
@@ -326,7 +343,7 @@
 		}
 
 		&:hover {
-			& > svg path {
+			&>svg path {
 				transition: all 0.1s;
 				fill: #CCCFE2;
 			}
@@ -334,14 +351,14 @@
 	}
 
 	&__sort {
-		 display: flex;
-		 align-items: center;
+		display: flex;
+		align-items: center;
 
-		 @media (max-width: 460px) {
-			 display: none;
-			 flex-direction: column;
-			 row-gap: 5px;
-		 }
+		@media (max-width: 460px) {
+			display: none;
+			flex-direction: column;
+			row-gap: 5px;
+		}
 	}
 
 	&__sort-false {
@@ -366,7 +383,7 @@
 	color: #97969B;
 	cursor: pointer;
 	transition: all 0.1s;
-	font-family:$mainFont;
+	font-family: $mainFont;
 	font-size: 14px;
 
 	@media (max-width: 460px) {

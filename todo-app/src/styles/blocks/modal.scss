@@ -1,0 +1,244 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(#000, 0.5);
+
+
+    &__container {
+        padding: 40px 25px 30px;
+        width: 100%;
+        max-height: 90%;
+        overflow-y: auto;
+        max-width: 500px;
+        background: $BgColor;
+        border-radius: 5px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+    }
+
+    &__form-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    &__title {
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    &__text {
+        word-break: break-all;
+    }
+
+    &__label-title {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    &__title-control {
+        display: flex;
+        column-gap: 10px;
+        position: relative;
+    }
+
+    &__select {
+        position: absolute;
+        top: 110%;
+        left: 0;
+        width: 30%;
+        background: $BgColor;
+        border: 1px solid $InputColor;
+        border-radius: 5px;
+        display: none;
+        flex-direction: column;
+        row-gap: 5px;
+        z-index: 100;
+
+        &.active {
+            display: flex;
+        }
+    }
+
+    &__state-btn {
+        padding: 0;
+        cursor: pointer;
+        color: $InputColor;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &__option {
+        padding: 5px;
+        cursor: pointer;
+
+        &:hover {
+            background: $InputColor;
+        }
+    }
+
+    &__title-btn {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            opacity: 0.6;
+        }
+    }
+
+    &__close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.6;
+        }
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+    }
+
+    &__label {
+        display: flex;
+        flex-direction: column;
+        row-gap: 5px;
+    }
+
+    &__input {
+        width: 100%;
+        font-size: $mainFontSize;
+        color: $InputColor;
+        padding: 5px;
+        font-family: $mainFont;
+        font-weight: $regularWeight;
+        border: 1px solid $InputColor;
+        border-radius: 5px;
+
+        @media (max-width: 500px) {
+            padding: 0 15px;
+        }
+
+        @media (max-width: 460px) {
+            font-size: 14px;
+            padding: 0 5px;
+        }
+
+        &:focus::-webkit-input-placeholder {
+            color: transparent;
+        }
+
+        &:focus::-moz-placeholder {
+            color: transparent;
+        }
+
+        &:focus:-moz-placeholder {
+            color: transparent;
+        }
+
+        &:focus:-ms-input-placeholder {
+            color: transparent;
+        }
+    }
+
+    &__btn {
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background: $InputColor;
+        border-radius: 5px;
+        column-gap: 10px;
+
+        &:hover {
+            opacity: 0.6;
+        }
+    }
+
+    &__label-checkname {
+        width: 100%;
+        column-gap: 10px;
+        display: flex;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+    }
+
+    &__delete-btn {
+        position: absolute;
+        right: -10px;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        display: none;
+        transition: all 0.1s;
+
+        &>svg {
+            z-index: -1;
+
+            @media (max-width: 460px) {
+                transform: scale(0.7);
+            }
+        }
+
+        &:hover {
+            &>svg path {
+                transition: all 0.1s;
+                fill: #CCCFE2;
+            }
+        }
+    }
+
+    &__time {
+        padding: 5px;
+        font-size: 16px;
+        background: $ButtonColor;
+        border-radius: 10px;
+
+        &.over {
+            background: rgba($ErrorColor, 0.1);
+            color: $ErrorColor;
+        }
+    }
+
+    &__error {
+        position: absolute;
+        background: #ffeb92;
+        border: 2px solid $ErrorColor;
+        border-radius: 5px;
+        min-width: 300px;
+        color: $ErrorColor;
+        font-size: 16px;
+        font-weight: 600;
+        padding: 40px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 100;
+        text-align: center;
+    }
+}

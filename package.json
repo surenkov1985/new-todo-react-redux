@@ -16,5 +16,7 @@
     "url": "https://github.com/surenkov1985/new-todo-react-redux/issues"
   },
   "homepage": "https://github.com/surenkov1985/new-todo-react-redux#readme",
-  "dependencies": {}
+  "dependencies": {
+    "dayjs": "^1.11.6"
+  }
 }

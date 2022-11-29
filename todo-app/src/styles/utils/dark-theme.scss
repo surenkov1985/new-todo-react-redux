@@ -1,5 +1,7 @@
 .dark {
 
+	$TextColor: #FAFAFA;
+
 	& .background {
 		background: #161722;
 
@@ -11,17 +13,53 @@
 		}
 	}
 
+	& .header {
+		background: url("../../img/bg-desktop-dark.jpg");
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: left center;
+	}
+
+	& .status {
+
+		&__title {
+			color: #cacde8;
+		}
+	}
+
 	& .todo {
+
+		&__title {
+			color: #cacde8;
+		}
 
 		&__create {
 			background: #25273c;
 		}
 
-		&__head {
-			background: url("../../img/bg-desktop-dark.jpg");
-			background-repeat: no-repeat;
-			background-size: cover;
-			background-position: left center;
+		&__project-link {
+			width: 150px;
+			height: 100px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #25273c;
+			border: 2px solid $DarkTextColor;
+			border-radius: 6px;
+			cursor: pointer;
+
+			&:hover {
+				border-color: #25273c;
+				background: $DarkTextColor;
+
+				& .todo__link {
+					color: #25273c;
+				}
+			}
+		}
+
+		&__link {
+			color: $DarkTextColor;
 		}
 
 		&__false-check {
@@ -29,7 +67,7 @@
 			background: #25273c;
 
 			&:hover {
-				background: linear-gradient(135deg, #57ddff,#c058f3);
+				background: linear-gradient(135deg, #57ddff, #c058f3);
 
 				&:before {
 					background: #25273c;
@@ -40,17 +78,19 @@
 		&__check {
 
 			&:checked {
-				& ~ .todo__false-check {
+				&~.todo__false-check {
 					background: linear-gradient(135deg, #57ddff, #c058f3);
 
-					&:before {background: transparent}
+					&:before {
+						background: transparent
+					}
 				}
 
-				& ~ .todo__false-check > svg {
+				&~.todo__false-check>svg {
 					display: block;
 				}
 
-				& ~ .todo__text {
+				&~.todo__text {
 					color: #525463;
 					text-decoration: line-through;
 				}
@@ -69,17 +109,19 @@
 			border-bottom: 1px solid #37394E;
 
 			&.active {
-				& ~ .todo__false-check {
+				&~.todo__false-check {
 					background: linear-gradient(135deg, #57ddff, #c058f3);
 
-					&:before {background: transparent}
+					&:before {
+						background: transparent
+					}
 				}
 
-				& ~ .todo__false-check > svg {
+				&~.todo__false-check>svg {
 					display: block;
 				}
 
-				& ~ .todo__text {
+				&~.todo__text {
 					color: #525463;
 					text-decoration: line-through;
 				}

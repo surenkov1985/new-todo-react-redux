@@ -4,6 +4,7 @@ import { BrowserRouter,  Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import NotFound from "./pages/NotFound";
 import Project from "./pages/Project";
+import { SelectProject } from "./pages/SelectProject";
 import { setProjects } from "./redux/projects/actions";
 
 function App() {
@@ -14,18 +15,14 @@ function App() {
 	});
 
 	useEffect(() => {
-		if (localStorage.hasOwnProperty("todo-projects")) {
-			dispatch(setProjects(JSON.parse(localStorage.getItem("todo-projects"))));
-		} else {
 			localStorage.setItem("todo-projects", JSON.stringify(projects));
-		}
-
-	}, []);
+	}, [projects]);
 
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route path="/" element={<Layout />}>
+					<Route path="select_project" element={<SelectProject/>}/>
 					<Route path="project" element={<Project />} />
 					<Route path="*" element={<NotFound />} />
 				</Route>
