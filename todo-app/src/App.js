@@ -15,6 +15,15 @@ function App() {
 	});
 
 	useEffect(() => {
+		document.addEventListener("dragover", (e) => {
+			e.preventDefault();
+		});
+		document.body.addEventListener("drop", (e) => {
+			e.preventDefault();
+		});
+	}, []);
+
+	useEffect(() => {
 			localStorage.setItem("todo-projects", JSON.stringify(projects));
 	}, [projects]);
 

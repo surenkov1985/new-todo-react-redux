@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { HiPlus } from "react-icons/hi";
-import uniqid from "uniqid"
-
+import uniqid from "uniqid";
 
 export const Create = ({ createText, createHandler, name, state }) => {
 	const [isCreateCard, setIsCreateCard] = useState(false);
 	const [val, setVal] = useState("");
-	const id = uniqid()
+	const id = uniqid();
 
 	function onKeyPress(e) {
 		if (e.key === "Enter" && val) {
@@ -16,14 +15,14 @@ export const Create = ({ createText, createHandler, name, state }) => {
 	}
 
 	const formSubmit = (e) => {
-		e.preventDefault()
+		e.preventDefault();
 		setIsCreateCard(false);
 		setVal("");
 		createHandler(val, id, state);
 	};
 
 	return (
-		<form className="todo__create-form" onSubmit={e => formSubmit(e)}>
+		<form className="todo__create-form" onSubmit={(e) => formSubmit(e)}>
 			<div className="todo__create-container">
 				{!isCreateCard ? (
 					<div
@@ -48,22 +47,34 @@ export const Create = ({ createText, createHandler, name, state }) => {
 							name={name}
 							value={val}
 							onChange={(e) => {
-									setVal(e.target.value);
-								}}
+								setVal(e.target.value);
+							}}
 							onKeyPress={(e) => onKeyPress(e)}
 						/>
-						<button
-							className="todo__form-btn"
-							onClick={(e) => {
-								e.preventDefault();
-								setIsCreateCard(false);
-							}}
-						>
-							Создать
-						</button>
+						<div className="todo__create-control">
+							<button
+								className="todo__form-btn"
+								onClick={(e) => {
+									e.preventDefault();
+									formSubmit(e);
+								}}
+							>
+								Add
+							</button>
+							<button
+								className="todo__form-btn"
+								onClick={(e) => {
+									e.preventDefault();
+
+									setIsCreateCard(false);
+								}}
+							>
+								Cancel
+							</button>
+						</div>
 					</label>
 				)}
 			</div>
 		</form>
 	);
-}
+};

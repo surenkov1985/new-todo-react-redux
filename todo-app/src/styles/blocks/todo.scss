@@ -121,6 +121,12 @@
 		}
 	}
 
+	&__create-control {
+		display: flex;
+		align-items: center;
+		column-gap: 10px;
+	}
+
 	&__check {
 		opacity: 0;
 		position: absolute;
@@ -189,6 +195,7 @@
 			}
 		}
 	}
+
 	&__create-label {
 		width: 100%;
 	}
@@ -313,7 +320,6 @@
 		padding: 5px 25px;
 		font-family: $mainFont;
 		font-weight: $regularWeight;
-		cursor: pointer;
 
 		@media (max-width: 500px) {
 			padding: 0px 15px;

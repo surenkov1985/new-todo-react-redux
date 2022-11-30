@@ -1,8 +1,10 @@
 import {
 	ADD_PROJECT,
 	ADD_STATUS,
+	CHECKED_LIST,
 	CREATE_PROJECT,
 	CREATE_TASK,
+	REMOVE_ITEM,
 	REMOVE_TASK,
 	SELECT_PROJECT,
 	SET_PROJECTS,
@@ -14,7 +16,20 @@ import uniqid from "uniqid";
 const initialState = {
 	projects: localStorage.hasOwnProperty("todo-projects")
 		? JSON.parse(localStorage.getItem("todo-projects"))
-		: [{ title: "test", id: uniqid(), statuses: ["Queue", "Development", "Done"], tasks: [] }],
+		: [
+				{
+					title: "test",
+					id: uniqid(),
+					statuses: [{text: "Queue"}, {text: "Development"},{text: "Done"}],
+					tasks: [],
+					taskCounter: 0,
+					priorities: [
+						{ text: "High", val: 1 },
+						{ text: "Average", val: 2 },
+						{ text: "Lower", val: 3 },
+					],
+				},
+		  ],
 	selectedProject: localStorage.hasOwnProperty("selected-project") ? JSON.parse(localStorage.getItem("selected-project")) : null,
 };
 
@@ -63,7 +78,11 @@ export const projectsReducer = (state = initialState, action) => {
 			console.log({ ...state.selectedProject, tasks: [...state.selectedProject.tasks, action.obj] });
 			return {
 				...state,
-				selectedProject: { ...state.selectedProject, tasks: [...state.selectedProject.tasks, action.obj] },
+				selectedProject: {
+					...state.selectedProject,
+					tasks: [...state.selectedProject.tasks, action.obj],
+					taskCounter: (state.selectedProject.taskCounter += 1),
+				},
 			};
 
 		case UPDATE_TASK:
@@ -80,15 +99,55 @@ export const projectsReducer = (state = initialState, action) => {
 				},
 			};
 		case REMOVE_TASK:
-			const removeIndex = state.selectedProject.tasks.findIndex((task) => task.id === action.id - 1);
+			const removeIndex = state.selectedProject.tasks.findIndex((task) => task.id === action.id);
+			const removeItem = state.selectedProject.tasks.splice(removeIndex, 1);
 			console.log(removeIndex);
 			return {
 				...state,
 				selectedProject: {
 					...state.selectedProject,
-					tasks: state.selectedProject.tasks.splice(removeIndex, 1),
+					tasks: state.selectedProject.tasks,
 				},
 			};
+		case CHECKED_LIST:
+			return {
+				...state,
+				selectedProject: {
+					...state.selectedProject,
+					tasks: state.selectedProject.tasks.map((task) => {
+						if (task.id === action.taskId) {
+							return {
+								...task,
+								checkList: task.checkList.map((check) => {
+									if (check.id === action.checkId) {
+										const checked = !check.checked;
+										console.log(!check.checked);
+										return { ...check, checked: checked };
+									}
+									return check;
+								}),
+							};
+						}
+						return task;
+					}),
+				},
+			};
+			case REMOVE_ITEM: 
+			return{
+				...state,
+				selectedProject: {
+					...state.selectedProject,
+					tasks: state.selectedProject.tasks.map((task) => {
+						if (task.id === action.taskId) {
+							return {
+								...task,
+								checkList: task.checkList.filter((check) => check.id !== action.checkId),
+							};
+						}
+						return task;
+					}),
+				}
+			}
 		default:
 			return state;
 	}

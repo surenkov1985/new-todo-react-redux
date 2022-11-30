@@ -1,0 +1,58 @@
+.card {
+    width: 100%;
+    border: 1px solid $InputColor;
+    border-radius: 5px;
+    padding: 15px 10px 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    cursor: pointer;
+
+    &:hover {
+        border-color: $CheckColor;
+        box-shadow: -2px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    }
+
+    &__title {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    &__delete {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.6;
+        }
+    }
+
+    &__icons {
+        display: flex;
+        align-items: center;
+        column-gap: 5px;
+    }
+
+    &__file {
+        max-height: 200px;
+        object-fit: cover;
+        border: 1px solid $InputColor;
+        border-radius: 5px;
+        overflow-y: auto;
+    }
+
+    &__text {
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        overflow: hidden;
+    }
+}

@@ -17,8 +17,6 @@ function Header(props) {
 		dispatch(themeToggle());
 	}
 
-	console.log(selectedProject);
-
 	useEffect(() => {
 		localStorage.setItem("todo-theme", theme);
 	}, [theme]);

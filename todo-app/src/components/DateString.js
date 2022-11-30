@@ -1,13 +1,15 @@
 import classNames from "classnames";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
-import "dayjs/locale/ru";
+import "dayjs/locale/en";
+
+
 export const DateString = ({ time }) => {
 	const [timeStyle, setTimeStyle] = useState("");
 	const [inputTime, setInputTime] = useState();
 	useEffect(() => {
 		if (time) {
-			setInputTime(dayjs(time).locale("ru").format("DD MMM YYYY HH:mm"));
+			setInputTime(dayjs(time).locale("en").format("YYYY MMM DD HH:mm"));
 		}
 	}, [time]);
 

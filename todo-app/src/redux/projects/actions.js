@@ -1,4 +1,4 @@
-import { ADD_PROJECT, ADD_STATUS, CREATE_PROJECT, CREATE_TASK, REMOVE_TASK, SELECT_PROJECT, SET_PROJECTS, UPDATE_PROJECTS, UPDATE_TASK } from "./types"
+import { ADD_PROJECT, ADD_STATUS, CHECKED_LIST, CREATE_PROJECT, CREATE_TASK, REMOVE_ITEM, REMOVE_TASK, SELECT_PROJECT, SET_PROJECTS, UPDATE_PROJECTS, UPDATE_TASK } from "./types"
 
 
 export const createProject = (path) => {
@@ -62,4 +62,20 @@ export const removeTask = (id) => {
     return {
         type: REMOVE_TASK, id
     }
+}
+
+export const checkedList = (taskId, checkId) => {
+    return {
+        type: CHECKED_LIST,
+        taskId:taskId,
+        checkId: checkId
+    }
+}
+
+export const removeItem = (taskId, checkId) => {
+    return {
+		type: REMOVE_ITEM,
+		taskId: taskId,
+		checkId: checkId,
+	};
 }
