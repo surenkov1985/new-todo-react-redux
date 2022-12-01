@@ -38,6 +38,11 @@
         padding: 15px;
     }
 
+    &__date {
+        font-size: 12px;
+        color: $InputColor;
+    }
+
     &__title {
         font-size: 24px;
         font-weight: 600;
@@ -139,10 +144,12 @@
     &__label {
         display: flex;
         flex-direction: column;
-        row-gap: 5px;
+        row-gap: 10px;
         position: relative;
 
-
+        &.subcomment {
+            margin-left: 20px;
+        }
     }
 
     &__input {

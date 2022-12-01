@@ -14,6 +14,8 @@ import { ListCreate } from "./ListCreate";
 import { FileInput } from "./FileItem";
 import { ClickItem } from "./CheckItem";
 import { fileRead } from "../js/functions";
+import { Comments } from "./Comments";
+import { Comment } from "../models";
 
 export const AddCard = ({ obj, closeModal, statuses, priorities }) => {
 	const task = useSelector((state) => {
@@ -22,6 +24,7 @@ export const AddCard = ({ obj, closeModal, statuses, priorities }) => {
 	});
 	const [todo, setTodo] = useState(task);
 	const [checkList, setCheckList] = useState(todo.checkList);
+	const [commentList, setCommentList] = useState(todo.comments);
 	const [pushData, setPushData] = useState(null);
 	const [error, setError] = useState("");
 	const dispatch = useDispatch();
@@ -31,16 +34,52 @@ export const AddCard = ({ obj, closeModal, statuses, priorities }) => {
 	useEffect(() => {
 		if (task) {
 			setTodo(task);
+			setCheckList(task.checkList);
+			setCommentList(task.comments);
 		}
 	}, [task]);
 
-	const pushList = (value) => {
+	const pushList = (name, value) => {
 		let pushList = { id: uniqid(), checked: false, completed: "", text: value };
+
 		if (!checkList) {
-			pushTodo("checkList", [pushList]);
+			pushTodo(name, [pushList]);
 		} else {
-			pushTodo("checkList", [...checkList, pushList]);
+			pushTodo(name, [...checkList, pushList]);
 		}
+	};
+	const pushComments = (name, value) => {
+		const comment = new Comment("User", value);
+		if (!commentList) {
+			pushTodo(name, [comment]);
+		} else {
+			pushTodo(name, [...commentList, comment]);
+		}
+	};
+	const pushSubComments = (comment, subcomment) => {
+		const subComment = new Comment("qqq", subcomment);
+
+		const arriterator = (arr, obj, val) => {
+			if (arr && arr.length !== 0) {
+				return arr.map((item) => {
+					if (arr.find((res) => res.id === obj.id)) {
+						if (item.id === obj.id) {
+							return { ...item, subComments: [...obj.subComments, val] };
+						}
+						return item;
+					} else {
+						return { ...item, subComments: arriterator(item.subComments, obj, val) };
+					}
+				});
+			}
+
+			return arr;
+		};
+
+		pushTodo(
+			"comments",
+			arriterator(commentList, comment, subComment)
+		);
 	};
 	const checkedHandler = (id) => {
 		dispatch(checkedList(obj.id, id));
@@ -81,7 +120,7 @@ export const AddCard = ({ obj, closeModal, statuses, priorities }) => {
 
 							<SelectBlock state={todo.status.text} states={statuses} clickHandler={pushTodo} title="Status" name="status" />
 
-							<SelectBlock state={todo.priority.text} states={priorities} clickHandler={pushTodo} title="Priority" name="priority"/>
+							<SelectBlock state={todo.priority.text} states={priorities} clickHandler={pushTodo} title="Priority" name="priority" />
 
 							<TextInput text={todo.description} name="description" keyHandler={pushTodo} title="Description" />
 
@@ -98,7 +137,7 @@ export const AddCard = ({ obj, closeModal, statuses, priorities }) => {
 										keyHandler={pushTodo}
 										listCreate={setIsCreate}
 									/>
-									{isCreate && <ListCreate listCreate={setIsCreate} pushListHandler={pushList} />}
+									{isCreate && <ListCreate listCreate={setIsCreate} pushListHandler={pushList} focus={true} name="checkList" />}
 								</label>
 							) : (
 								<button
@@ -125,6 +164,12 @@ export const AddCard = ({ obj, closeModal, statuses, priorities }) => {
 											/>
 										);
 									})}
+							</div>
+							<div className="modal__label">
+								<h3 className="modal__label-title">Comments</h3>
+
+								<ListCreate focus={false} pushListHandler={pushComments} name="comments" />
+								{commentList && <Comments comments={commentList} pushComments={pushSubComments} />}
 							</div>
 						</div>
 					)}

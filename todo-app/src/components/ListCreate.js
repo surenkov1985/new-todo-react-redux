@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { GrClose } from "react-icons/gr";
 
-export const ListCreate = ({ pushListHandler, listCreate }) => {
+export const ListCreate = ({ pushListHandler, listCreate, focus, name }) => {
 	const [val, setVal] = useState("");
 
 	return (
@@ -10,16 +10,17 @@ export const ListCreate = ({ pushListHandler, listCreate }) => {
 			<input
 				type="text"
 				className="todo__input"
-				placeholder="Добавить запись"
+				placeholder="Enter text"
 				value={val}
+				name={name}
 				onChange={(e) => {
 					setVal(e.target.value);
 				}}
-				autoFocus={true}
+				autoFocus={focus}
 				onKeyDown={(e) => {
 					if (e.key === "Enter") {
 						e.preventDefault();
-						pushListHandler(val);
+						pushListHandler(name, val);
 						setVal("");
 					}
 				}}
@@ -28,13 +29,13 @@ export const ListCreate = ({ pushListHandler, listCreate }) => {
 				className="modal__title-btn"
 				onClick={(e) => {
 					e.preventDefault();
-					pushListHandler(val);
+					pushListHandler(name, val);
 					setVal("");
 				}}
 			>
 				<AiOutlinePlus color="#97969B" size={20} />
 			</button>
-			<button
+			{listCreate && <button
 				className="modal__title-btn"
 				onClick={(e) => {
 					e.preventDefault();
@@ -42,7 +43,7 @@ export const ListCreate = ({ pushListHandler, listCreate }) => {
 				}}
 			>
 				<GrClose color="#97969B" size={20} />
-			</button>
+			</button>}
 		</label>
 	);
 };
