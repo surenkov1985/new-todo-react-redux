@@ -1,26 +1,30 @@
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
+import Button from "./Button";
 import { DateString } from "./DateString";
 
 export const DateInput = ({ timestamp, clickHandler, title }) => {
 	const [inputTime, setInputTime] = useState();
 	const [isTimeEdit, setIstimeEdit] = useState(false);
 
+	const timeEditHandler = () => {
+		clickHandler("endDate", inputTime);
+		timeEditToggleHandler();
+	}
+
+	const timeEditToggleHandler = () => {
+		setIstimeEdit(!isTimeEdit);
+	}
+
 	return (
 		<div>
 			<label className="modal__label">
 				<div className="modal__title-control">
 					<h2 className="modal__label-title">{title}</h2>
-					<button className="modal__title-btn" onClick={() => {}}>
-						<AiFillEdit
-							color="#97969B"
-							size={20}
-							onClick={() => {
-								setIstimeEdit(!isTimeEdit);
-							}}
-						/>
-					</button>
+					<Button classList={["modal__title-btn"]} onClick={timeEditToggleHandler}>
+						<AiFillEdit color="#97969B" size={20} />
+					</Button>
 				</div>
 				<div className="modal__title-control">
 					{timestamp ? (
@@ -28,14 +32,9 @@ export const DateInput = ({ timestamp, clickHandler, title }) => {
 							<DateString time={timestamp} />
 						</>
 					) : (
-						<button
-							className="modal__btn"
-							onClick={() => {
-								setIstimeEdit(!isTimeEdit);
-							}}
-						>
+						<Button classList={["modal__btn"]} onClick={timeEditToggleHandler}>
 							Add due date
-						</button>
+						</Button>
 					)}
 				</div>
 
@@ -55,15 +54,9 @@ export const DateInput = ({ timestamp, clickHandler, title }) => {
 									}
 								}}
 							/>
-							<button
-								className="modal__btn"
-								onClick={() => {
-									clickHandler("endDate", inputTime);
-									setIstimeEdit(!isTimeEdit);
-								}}
-							>
+							<Button classList={["modal__btn"]} onClick={timeEditHandler}>
 								ok
-							</button>
+							</Button>
 						</>
 					</div>
 				)}

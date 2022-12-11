@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { HiPlus } from "react-icons/hi";
-import uniqid from "uniqid";
+import Button from "./Button";
 
 export const Create = ({ createText, createHandler, name, state }) => {
 	const [isCreateCard, setIsCreateCard] = useState(false);
 	const [val, setVal] = useState("");
-	const id = uniqid();
 
 	function onKeyPress(e) {
 		if (e.key === "Enter" && val) {
@@ -18,8 +17,12 @@ export const Create = ({ createText, createHandler, name, state }) => {
 		e.preventDefault();
 		setIsCreateCard(false);
 		setVal("");
-		createHandler(val, id, state);
+		createHandler(val, state);
 	};
+
+	const cancelButtonHandler = () => {
+		setIsCreateCard(false)
+	}
 
 	return (
 		<form className="todo__create-form" onSubmit={(e) => formSubmit(e)}>
@@ -52,25 +55,12 @@ export const Create = ({ createText, createHandler, name, state }) => {
 							onKeyPress={(e) => onKeyPress(e)}
 						/>
 						<div className="todo__create-control">
-							<button
-								className="todo__form-btn"
-								onClick={(e) => {
-									e.preventDefault();
-									formSubmit(e);
-								}}
-							>
+							<Button classList={["todo__form-btn"]} onClick={formSubmit}>
 								Add
-							</button>
-							<button
-								className="todo__form-btn"
-								onClick={(e) => {
-									e.preventDefault();
-
-									setIsCreateCard(false);
-								}}
-							>
+							</Button>
+							<Button classList={["todo__form-btn"]} onClick={cancelButtonHandler}>
 								Cancel
-							</button>
+							</Button>
 						</div>
 					</label>
 				)}

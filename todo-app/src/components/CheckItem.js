@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import { BsCheck } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
+import Button from "./Button";
 
 export const ClickItem = ({ checked, checkHandler, text, removeHandler, id }) => {
 	const [val, setVal] = useState(text);
 	const [check, setCheck] = useState(checked);
+
+	const removeButtonHandler = () => {
+		removeHandler(id)
+	}
 
 	return (
 		<div className="modal__list">
@@ -29,17 +34,11 @@ export const ClickItem = ({ checked, checkHandler, text, removeHandler, id }) =>
 					value={val}
 					onChange={(e) => {
 						setVal(e.target.value);
-						console.log(111);
 					}}
 				/>
-				<button
-					className="modal__delete-btn"
-					onClick={(e) => {
-						removeHandler(id);
-					}}
-				>
+				<Button classList={["modal__delete-btn"]} onClick={removeButtonHandler}>
 					<GrClose size={18} color="#ff0000" />
-				</button>
+				</Button>
 			</label>
 		</div>
 	);

@@ -1,37 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Create } from "../components/Create";
 import { useDispatch, useSelector } from "react-redux";
-import { addStatus, addTask, removeTask, selectProject } from "../redux/projects/actions";
+import { addStatus, addTask, removeTask, updateProjects } from "../redux/projects/actions";
 import { AddCard } from "../components/AddCard";
 import { TodoCard } from "../components/TodoCard";
-import dayjs from "dayjs";
+import { Task } from "../models";
 
 export default function Project() {
-	const { projects, selectedProject } = useSelector((state) => state.projectsReducer);
+	const { selectedProject } = useSelector((state) => state.projectsReducer);
 	const dispatch = useDispatch();
 	const [modalActive, setModalActive] = useState(false);
 	const [task, setTask] = useState(null);
 
-	const setState = (text, id, state) => {
-		selectedProject.statuses.push(text);
-		dispatch(addStatus(selectedProject));
-		dispatch(selectProject(selectedProject));
+	// Добавление колонки-статуса
+
+	const setState = (text, state) => {
+		dispatch(addStatus({ text: text }));
 	};
+
+	// Закрытие модального окна
 
 	const closeModal = () => {
 		setModalActive(false);
 		setTask(null);
 	};
 
-	const createTask = (value, id, state) => {
-		const data = {
-			title: value,
-			id: id,
-			status: state,
-			numb: selectedProject.taskCounter + 1,
-			date: dayjs().valueOf(),
-			priority: selectedProject.priorities[0],
-		};
+	// Добавление новой задачи
+
+	const createTask = (value, state) => {
+		const data = new Task(value, state, selectedProject.taskCounter + 1, selectedProject.priorities[0]);
 		dispatch(addTask(data));
 	};
 
@@ -39,10 +36,14 @@ export default function Project() {
 		setModalActive(true);
 	};
 
+	// Обработка клика по задаче (выбирается задача, открывается модальное окно с данными выбранной задачи)
+
 	const cardClickHandler = (data) => {
 		setTask(data);
 		modalOpen();
 	};
+
+	// Удаление задачи
 
 	const deleteTask = (event, id) => {
 		event.preventDefault();
@@ -50,13 +51,10 @@ export default function Project() {
 		dispatch(removeTask(id));
 	};
 
-	useEffect(() => {
-		localStorage.setItem("todo-projects", JSON.stringify(projects));
-		localStorage.setItem("selected-project", JSON.stringify(selectedProject));
-	}, [projects]);
+	// Обновление списка проектов в State при изменении выбранного проекта
 
 	useEffect(() => {
-		dispatch(addStatus(selectedProject));
+		if (selectedProject) dispatch(updateProjects(selectedProject));
 	}, [selectedProject]);
 
 	return (

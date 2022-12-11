@@ -1,16 +1,13 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { BrowserRouter,  Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import NotFound from "./pages/NotFound";
 import Project from "./pages/Project";
 import { SelectProject } from "./pages/SelectProject";
-import { setProjects } from "./redux/projects/actions";
 
 function App() {
-	const dispatch = useDispatch();
-
-	const { projects } = useSelector((state) => {
+	const { projects, selectedProject } = useSelector((state) => {
 		return state.projectsReducer;
 	});
 
@@ -23,15 +20,24 @@ function App() {
 		});
 	}, []);
 
+	// При изменении проектов (добавление/удаление) обновляем значение в localStorage
 	useEffect(() => {
-			localStorage.setItem("todo-projects", JSON.stringify(projects));
+		if (projects) localStorage.setItem("todo-projects", JSON.stringify(projects));
 	}, [projects]);
+
+	// При изменении выбранного проекта и внесении изменений в выбранном проекте обновляем значение в localStorage
+
+	useEffect(() => {
+		if (selectedProject) {
+			localStorage.setItem("selected-project", JSON.stringify(selectedProject));
+		}
+	}, [selectedProject]);
 
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route path="/" element={<Layout />}>
-					<Route path="select_project" element={<SelectProject/>}/>
+					<Route path="select_project" element={<SelectProject />} />
 					<Route path="project" element={<Project />} />
 					<Route path="*" element={<NotFound />} />
 				</Route>

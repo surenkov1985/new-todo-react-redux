@@ -37,10 +37,10 @@ export const addStatus = (obj) => {
     }
 }
 
-export const addProject = (obj) => {
+export const addProject = (title) => {
     return {
         type: ADD_PROJECT,
-        obj
+        title
     }
 }
 
@@ -51,9 +51,10 @@ export const addTask = (obj) => {
     }
 }
 
-export const updateTask = (obj) => {
+export const updateTask = ({id, obj}) => {
     return {
         type: UPDATE_TASK,
+        id,
         obj
     }
 }

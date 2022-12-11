@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import "dayjs/locale/en";
 import { useState } from "react";
+import Button from "./Button";
 import { ListCreate } from "./ListCreate";
 
 export const CommentBlock = ({ data, commHandler, buttonHandler }) => {
@@ -12,21 +13,19 @@ export const CommentBlock = ({ data, commHandler, buttonHandler }) => {
 		setIsReply(false);
 	};
 
+	const replyCommentHandler = () => {
+		buttonHandler(data);
+		setIsReply(true);
+	}
+
 	return (
 		<>
 			<div>
-				<span>{data.user}</span> -<span className="modal__date">{dayjs(data.date).locale("en").format("YYYY-MM-DD HH:mm")}</span>
+				<span>{data.user}</span> - <span className="modal__date">{dayjs(data.date).locale("en").format("YYYY-MM-DD HH:mm")}</span>
 			</div>
 			<div>{data.text}</div>
 			<div>
-				<button
-					onClick={(e) => {
-						buttonHandler(data);
-						setIsReply(true);
-					}}
-				>
-					reply
-				</button>
+				<Button classList={[""]} onClick={replyCommentHandler}>reply</Button>
 				{isReply && <ListCreate focus={true} pushListHandler={pushSubComments} name="subComments" />}
 			</div>
 		</>

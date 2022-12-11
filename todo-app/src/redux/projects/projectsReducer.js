@@ -11,26 +11,12 @@ import {
 	UPDATE_PROJECTS,
 	UPDATE_TASK,
 } from "./types";
-import uniqid from "uniqid";
+import { Project } from "../../models";
 
 const initialState = {
-	projects: localStorage.hasOwnProperty("todo-projects")
-		? JSON.parse(localStorage.getItem("todo-projects"))
-		: [
-				{
-					title: "test",
-					id: uniqid(),
-					statuses: [{text: "Queue"}, {text: "Development"},{text: "Done"}],
-					tasks: [],
-					taskCounter: 0,
-					priorities: [
-						{ text: "High", val: 1 },
-						{ text: "Average", val: 2 },
-						{ text: "Lower", val: 3 },
-					],
-				},
-		  ],
-	selectedProject: localStorage.hasOwnProperty("selected-project") ? JSON.parse(localStorage.getItem("selected-project")) : null,
+	user: {userName: "User"},
+	projects: JSON.parse(localStorage.getItem("todo-projects")) || [new Project("Test")],
+	selectedProject: JSON.parse(localStorage.getItem("selected-project")) || null,
 };
 
 export const projectsReducer = (state = initialState, action) => {
@@ -42,7 +28,7 @@ export const projectsReducer = (state = initialState, action) => {
 			return {
 				...state,
 				projects: state.projects.map((obj) => {
-					if (obj.id === state.selectedProject.id) {
+					if (obj.id === action.obj.id) {
 						return action.obj;
 					}
 
@@ -59,23 +45,16 @@ export const projectsReducer = (state = initialState, action) => {
 		case ADD_STATUS:
 			return {
 				...state,
-				projects: state.projects.map((obj) => {
-					if (obj.id === state.selectedProject.id) {
-						return action.obj;
-					}
-
-					return obj;
-				}),
+				selectedProject: { ...state.selectedProject, statuses: [...state.selectedProject.statuses, action.obj] },
 			};
 
 		case ADD_PROJECT:
 			return {
 				...state,
-				projects: [...state.projects, action.obj],
+				projects: [...state.projects, new Project(action.title)],
 			};
 
 		case CREATE_TASK:
-			console.log({ ...state.selectedProject, tasks: [...state.selectedProject.tasks, action.obj] });
 			return {
 				...state,
 				selectedProject: {
@@ -91,22 +70,19 @@ export const projectsReducer = (state = initialState, action) => {
 				selectedProject: {
 					...state.selectedProject,
 					tasks: state.selectedProject.tasks.map((task) => {
-						if (task.id === action.obj.id) {
-							return action.obj;
+						if (task.id === action.id) {
+							return { ...task, ...action.obj };
 						}
 						return task;
 					}),
 				},
 			};
 		case REMOVE_TASK:
-			const removeIndex = state.selectedProject.tasks.findIndex((task) => task.id === action.id);
-			const removeItem = state.selectedProject.tasks.splice(removeIndex, 1);
-			console.log(removeIndex);
 			return {
 				...state,
 				selectedProject: {
 					...state.selectedProject,
-					tasks: state.selectedProject.tasks,
+					tasks: state.selectedProject.tasks.filter(task => task.id !== action.id),
 				},
 			};
 		case CHECKED_LIST:
@@ -132,8 +108,8 @@ export const projectsReducer = (state = initialState, action) => {
 					}),
 				},
 			};
-			case REMOVE_ITEM: 
-			return{
+		case REMOVE_ITEM:
+			return {
 				...state,
 				selectedProject: {
 					...state.selectedProject,
@@ -146,8 +122,8 @@ export const projectsReducer = (state = initialState, action) => {
 						}
 						return task;
 					}),
-				}
-			}
+				},
+			};
 		default:
 			return state;
 	}

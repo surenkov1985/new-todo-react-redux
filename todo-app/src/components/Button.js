@@ -1,8 +1,10 @@
 import React from "react";
 
-export default function Button({classList, text, onClick}) {
+export default function Button(props) {
+
+	const {classList, onClick} = props
 
 	return (
-		<button className={classList.join(" ")} onClick={onClick}>{text}</button>
+		<button className={classList.join(" ")} onClick={onClick}>{props.children}</button>
 	)
 }

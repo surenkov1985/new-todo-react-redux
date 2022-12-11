@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { GrAttachment } from "react-icons/gr";
 import { FileElem } from "./FileElem";
 import { fileRead } from "../js/functions";
+import Button from "./Button";
 
 export const FileInput = ({ value, name, checkHandler, type, setErr }) => {
 	const [file, setFile] = useState();
 	const [isValue, setIsValue] = useState(false);
-	
+
 	useEffect(() => {
 		if (value) {
 			setFile(value);
@@ -20,10 +21,10 @@ export const FileInput = ({ value, name, checkHandler, type, setErr }) => {
 		<>
 			{!isValue && (
 				<label className="modal__label">
-					<button className="false-input">
+					<Button classList={["false-input"]}>
 						<GrAttachment size={18} color="#646464" />
 						Select a file or drag and drop a file onto a card
-					</button>
+					</Button>
 					<input
 						type="file"
 						className="modal__input file-input"
@@ -37,9 +38,7 @@ export const FileInput = ({ value, name, checkHandler, type, setErr }) => {
 				</label>
 			)}
 			{isValue && (
-				<div
-					className="modal__file"
-				>
+				<div className="modal__file">
 					<FileElem file={file} type={type} />
 				</div>
 			)}

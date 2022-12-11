@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { GrClose } from "react-icons/gr";
-import uniqid from "uniqid";
+import Button from "./Button";
 
-export const AddCard = ({ closeModal, addProject }) => {
+export const AddProject = ({ closeModal, addProject }) => {
 	const [val, setVal] = useState("");
-	const id = uniqid();
 
 	return (
 		<div className="modal">
@@ -26,9 +25,7 @@ export const AddCard = ({ closeModal, addProject }) => {
 								onKeyDown={(e) => {
 									if (e.key === "Enter") {
 										e.preventDefault();
-										if (val) {
-											addProject(val, id);
-										}
+										addProject(val);
 									}
 								}}
 							/>
@@ -36,18 +33,16 @@ export const AddCard = ({ closeModal, addProject }) => {
 						<button
 							className="modal__btn"
 							onClick={() => {
-								if (val) {
-									addProject(val, id);
-								}
+								addProject(val);
 							}}
 						>
 							Add
 						</button>
 					</div>
 				</div>
-				<button className="modal__close" onClick={(e) => closeModal()}>
+				<Button classList={["modal__close"]} onClick={closeModal}>
 					<GrClose size={20} color="#ff0000" />
-				</button>
+				</Button>
 			</div>
 		</div>
 	);

@@ -6,20 +6,26 @@ import { themeToggle } from "../redux/theme/actions";
 import Button from "./Button";
 import { BsFillMoonFill, BsFillSunFill } from "react-icons/bs";
 
-function Header(props) {
+export const Header = () => {
 	const sunBtn = <BsFillSunFill size={26} color="#FFF" />;
 	const moonBtn = <BsFillMoonFill size={26} color="#FFF" />;
 	const { theme } = useSelector((state) => state.themeReducer);
 	const { selectedProject } = useSelector((state) => state.projectsReducer);
 	const dispatch = useDispatch();
 
+	//  Обработчик кнопки переключения темы
+
 	function buttonHandler() {
 		dispatch(themeToggle());
 	}
 
+	// При изменении темы передаем новое значение в localStorage
+
 	useEffect(() => {
 		localStorage.setItem("todo-theme", theme);
 	}, [theme]);
+
+	// Обработчик ссылки выхода к выбору проектов. Удаляет выбранный проект из State и из localStorage
 
 	const linkHandler = () => {
 		dispatch(selectProject(null));
@@ -45,14 +51,11 @@ function Header(props) {
 				)}
 				<Button
 					classList={["header__theme-btn"]}
-					text={theme === "dark" ? sunBtn : moonBtn}
 					onClick={() => {
 						buttonHandler();
 					}}
-				/>
+				>{theme === "dark" ? sunBtn : moonBtn}</Button>
 			</div>
 		</div>
 	);
 }
-
-export default Header;
