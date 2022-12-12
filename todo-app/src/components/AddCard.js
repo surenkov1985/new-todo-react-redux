@@ -25,10 +25,35 @@ export const AddCard = ({ obj, closeModal, statuses, priorities }) => {
 		return projectsReducer.selectedProject.tasks.find((task) => task.id === obj.id);
 	});
 
+	const setTimeString = () => {
+		let time = Math.floor((dayjs().valueOf() - task.date) / 1000);
+		let day = Math.floor(time / (24 * 60 * 60)) ? `${Math.floor(time / (24 * 60 * 60))} day ` : "";
+		let hour = Math.floor((time % (24 * 60 * 60)) / (60 * 60)) ? `${Math.floor((time % (24 * 60 * 60)) / (60 * 60))} hour ` : "";
+		let min = Math.floor(((time % (24 * 60 * 60)) % (60 * 60)) / 60) ? `${Math.floor(((time % (24 * 60 * 60)) % (60 * 60)) / 60)} min` : "";
+
+		return day + hour + min;
+	};
+
 	const [pushData, setPushData] = useState(null);
 	const [error, setError] = useState("");
 	const [isCreate, setIsCreate] = useState(false);
 	const [checkNameCreate, setCheckNameCreate] = useState(task.checkListName ? true : false);
+	const [leadTime, setLeadTime] = useState(setTimeString);
+	let leadTimeInterval;
+
+	
+
+	useEffect(() => {
+		leadTimeInterval = setInterval(() => {
+			setLeadTime(setTimeString);
+		}, 300 * 1000);
+	}, []);
+
+	const CloseModalHandler = () => {
+		closeModal();
+		clearInterval(leadTimeInterval);
+		setLeadTime("");
+	};
 
 	// Функция добавления древовидных комментариев
 
@@ -109,14 +134,14 @@ export const AddCard = ({ obj, closeModal, statuses, priorities }) => {
 	}, [pushData]);
 
 	const checkListNameHandler = () => {
-		setCheckNameCreate(true)
-	}
+		setCheckNameCreate(true);
+	};
 
 	return (
 		<div
 			className="modal"
 			onClick={(e) => {
-				if (e.target.classList.contains("modal")) closeModal();
+				if (e.target.classList.contains("modal")) CloseModalHandler();
 			}}
 		>
 			<div
@@ -136,6 +161,11 @@ export const AddCard = ({ obj, closeModal, statuses, priorities }) => {
 							<SelectBlock state={task.status.text} states={statuses} clickHandler={pushTodo} title="Status" name="status" />
 
 							<SelectBlock state={task.priority.text} states={priorities} clickHandler={pushTodo} title="Priority" name="priority" />
+
+							<div className="modal__title-control">
+								<span>Lead time</span>
+								<span>{leadTime}</span>
+							</div>
 
 							<TextInput text={task.description} name="description" keyHandler={pushTodo} title="Description" />
 
@@ -185,7 +215,7 @@ export const AddCard = ({ obj, closeModal, statuses, priorities }) => {
 					)}
 				</div>
 				{error && <div className="modal__error">{error}</div>}
-				<Button classList={["modal__close"]} onClick={closeModal}>
+				<Button classList={["modal__close"]} onClick={CloseModalHandler}>
 					<GrClose size={20} color="#ff0000" />
 				</Button>
 			</div>

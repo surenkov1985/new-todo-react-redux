@@ -8,6 +8,7 @@ import { Task } from "../models";
 
 export default function Project() {
 	const { selectedProject } = useSelector((state) => state.projectsReducer);
+	const [filteredTasks, setFilteredTasks] = useState(selectedProject.tasks);
 	const dispatch = useDispatch();
 	const [modalActive, setModalActive] = useState(false);
 	const [task, setTask] = useState(null);
@@ -51,29 +52,51 @@ export default function Project() {
 		dispatch(removeTask(id));
 	};
 
+	// Поиск по номеру задачи и заголовку
+
+	const searchInputHandler = (e) => {
+		let reg = new RegExp(e.target.value);
+		setFilteredTasks(selectedProject.tasks.filter((task) => reg.test(task.title) || reg.test(String(task.numb))));
+	};
+
 	// Обновление списка проектов в State при изменении выбранного проекта
 
 	useEffect(() => {
-		if (selectedProject) dispatch(updateProjects(selectedProject));
+		if (selectedProject) {
+			dispatch(updateProjects(selectedProject));
+			setFilteredTasks(selectedProject.tasks);
+		}
 	}, [selectedProject]);
 
 	return (
 		<div className="todo__main">
-			<h1 className="todo__title">{selectedProject?.title}</h1>
+			<div className="todo__title-control">
+				<h1 className="todo__title">{selectedProject?.title}</h1>
+				<input type="search" className="modal__input" onChange={searchInputHandler} placeholder="Search tasks to number or title" />
+			</div>
+
 			<div className="todo__container">
 				{selectedProject &&
 					selectedProject.statuses?.map((status) => {
 						return (
 							<div key={status.text} className="todo__create status">
 								<h2 className="status__title">{status.text}</h2>
-								{selectedProject.tasks
-									.filter((item) => item.status.text === status.text)
-									.sort((a, b) => a.priority.val - b.priority.val)
-									.map((task) => {
-										return (
-											<TodoCard key={task.id} data={task} id={task.id} cardClick={cardClickHandler} deleteCard={deleteTask} />
-										);
-									})}
+								<div className="todo__list">
+									{filteredTasks
+										.filter((item) => item.status.text === status.text)
+										.sort((a, b) => a.priority.val - b.priority.val)
+										.map((task) => {
+											return (
+												<TodoCard
+													key={task.id}
+													data={task}
+													id={task.id}
+													cardClick={cardClickHandler}
+													deleteCard={deleteTask}
+												/>
+											);
+										})}
+								</div>
 								<Create createHandler={createTask} createText="Add a task" name="title" state={status} />
 							</div>
 						);

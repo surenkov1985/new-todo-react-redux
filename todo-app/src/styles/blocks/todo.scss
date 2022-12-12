@@ -31,6 +31,16 @@
 		position: relative;
 	}
 
+	&__list {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		row-gap: 10px;
+		overflow-y: auto;
+		background: $BgColor;
+		padding: 10px;
+	}
+
 	&__block {
 		width: 100%;
 		padding: 25px;
@@ -382,6 +392,12 @@
 		@media (max-width: 460px) {
 			font-size: 13px;
 		}
+	}
+
+	&__title-control {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 }
 
