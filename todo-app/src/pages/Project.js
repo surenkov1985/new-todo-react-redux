@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Create } from "../components/Create";
 import { useDispatch, useSelector } from "react-redux";
-import { addStatus, addTask, removeTask, updateProjects } from "../redux/projects/actions";
+import { addStatus, addTask, removeTask, updateProjects, updateTask } from "../redux/projects/actions";
 import { AddCard } from "../components/AddCard";
 import { TodoCard } from "../components/TodoCard";
 import { Task } from "../models";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 export default function Project() {
 	const { selectedProject } = useSelector((state) => state.projectsReducer);
@@ -68,47 +69,84 @@ export default function Project() {
 		}
 	}, [selectedProject]);
 
+	const onDragStart = (res) => {
+		/*...*/
+	};
+	const onDragUpdate = (res) => {
+		const { source, destination, draggableId } = res;
+		let pushData = filteredTasks.find((task) => task.id === draggableId);
+		let newData = filteredTasks.filter(task => task.status.text === pushData.status.text)[destination.index];
+		pushData = { ...pushData, priority: newData.priority };
+		dispatch(updateTask({ id: pushData.id, obj: pushData }));
+	};
+	const onDragEnd = (res) => {
+		console.log(res);
+		const { source, destination, draggableId } = res;
+		const pushData = filteredTasks.find((task) => task.id === draggableId);
+
+		if (destination.droppableId !== source.droppableId) {
+			
+			pushData.status.text = destination.droppableId;
+			dispatch(updateTask({ id: pushData.id, obj: pushData }));
+		}
+	};
+
+	console.log(filteredTasks);
+
 	return (
-		<div className="todo__main">
-			<div className="todo__title-control">
-				<h1 className="todo__title">{selectedProject?.title}</h1>
-				<input type="search" className="modal__input" onChange={searchInputHandler} placeholder="Search tasks to number or title" />
-			</div>
-
-			<div className="todo__container">
-				{selectedProject &&
-					selectedProject.statuses?.map((status) => {
-						return (
-							<div key={status.text} className="todo__create status">
-								<h2 className="status__title">{status.text}</h2>
-								<div className="todo__list">
-									{filteredTasks
-										.filter((item) => item.status.text === status.text)
-										.sort((a, b) => a.priority.val - b.priority.val)
-										.map((task) => {
-											return (
-												<TodoCard
-													key={task.id}
-													data={task}
-													id={task.id}
-													cardClick={cardClickHandler}
-													deleteCard={deleteTask}
-												/>
-											);
-										})}
-								</div>
-								<Create createHandler={createTask} createText="Add a task" name="title" state={status} />
-							</div>
-						);
-					})}
-
-				<div className="todo__create status">
-					<Create createHandler={setState} createText="Add a column" name="status" />
+		<DragDropContext onDragStart={onDragStart} onDragUpdate={onDragUpdate} onDragEnd={onDragEnd}>
+			<div className="todo__main">
+				<div className="todo__title-control">
+					<h1 className="todo__title">{selectedProject?.title}</h1>
+					<input type="search" className="modal__input" onChange={searchInputHandler} placeholder="Search tasks to number or title" />
 				</div>
+
+				<div className="todo__container">
+					{selectedProject &&
+						selectedProject.statuses?.map((status) => {
+							return (
+								<Droppable droppableId={status.text} key={status.text} direction="vertical">
+									{(provided) => (
+										<div ref={provided.innerRef} className="todo__create status" {...provided.droppableProps}>
+											<h2 className="status__title">{status.text}</h2>
+											<div className="todo__list">
+												{filteredTasks
+													.filter((item) => item.status.text === status.text)
+													.sort((a, b) => a.priority.val - b.priority.val)
+													.map((task, index) => {
+														return (
+															<Draggable draggableId={task.id} key={task.id} index={index}>
+																{(prov, snapshot) => (
+																	<TodoCard
+																		innerRef={prov.innerRef}
+																		provided={prov}
+																		data={task}
+																		id={task.id}
+																		cardClick={cardClickHandler}
+																		deleteCard={deleteTask}
+																	/>
+																)}
+															</Draggable>
+														);
+													})}
+												{provided.placeholder}
+											</div>
+
+											<Create createHandler={createTask} createText="Add a task" name="title" state={status} />
+										</div>
+									)}
+								</Droppable>
+							);
+						})}
+
+					<div className="todo__create status">
+						<Create createHandler={setState} createText="Add a column" name="status" />
+					</div>
+				</div>
+				{modalActive && (
+					<AddCard closeModal={closeModal} obj={task} statuses={selectedProject.statuses} priorities={selectedProject.priorities} />
+				)}
 			</div>
-			{modalActive && (
-				<AddCard closeModal={closeModal} obj={task} statuses={selectedProject.statuses} priorities={selectedProject.priorities} />
-			)}
-		</div>
+		</DragDropContext>
 	);
 }

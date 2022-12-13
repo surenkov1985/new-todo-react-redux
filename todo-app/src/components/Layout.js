@@ -20,10 +20,11 @@ export const Layout = () => {
 	}, []);
 
 	return (
-		<div className={classNames("container", theme)}>
+			<div className={classNames("container", theme)}>
 			<div className="background" />
 			<Header project={selectedProject} />
 			<Outlet />
 		</div>
+		
 	);
 };

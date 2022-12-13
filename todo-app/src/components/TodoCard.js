@@ -4,12 +4,16 @@ import { BsUiChecks } from "react-icons/bs";
 import { DateString } from "../components/DateString";
 import { FileElem } from "./FileElem";
 
-export const TodoCard = ({ data, deleteCard, cardClick, id }) => {
+export const TodoCard = ({ data, deleteCard, cardClick, id, innerRef, provided }) => {
 	return (
 		<article
+			{...provided.draggableProps}
+			{...provided.dragHandleProps}
+			ref={innerRef}
 			className="todo__card card"
 			onClick={() => cardClick(data)}
-			// onDragStart={(e) => dragStartHandler(data, id)} draggable
+			// onDragStart={(e) => dragStartHandler(data, id)} 
+			// draggable
 		>
 			<h2 className="card__title">{data.title}</h2>
 			<div className="card__description">{data.description && <p className="card__text">{data.description}</p>}</div>

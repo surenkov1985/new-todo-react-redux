@@ -1,13 +1,10 @@
 import "dayjs/locale/en";
-import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { ListCreate } from "./ListCreate";
 import classNames from "classnames";
 import { CommentBlock } from "./CommentBlock";
 
 export const Comments = ({ comments, order, pushComments, className }) => {
 
-    const [count, setCount] = useState(0)
     const [comment, setComment] = useState()
     const [subComment, setSubComment] = useState(null)
     const getComment = (name, value) => [
