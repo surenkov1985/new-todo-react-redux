@@ -41,6 +41,10 @@
 			color: #cacde8;
 		}
 
+		&__form-btn {
+			color: $DarkTextColor;
+		}
+
 		&__create {
 			background: #25273c;
 		}
@@ -64,6 +68,10 @@
 					color: #25273c;
 				}
 			}
+		}
+
+		&__list {
+			background: $DarcBgColor;
 		}
 
 		&__link {
@@ -164,6 +172,29 @@
 
 		&.active {
 			color: #4F74CD;
+		}
+	}
+
+	& .card { 
+
+		&__title {
+			color: $DarkTextColor;
+		}
+	}
+
+	& .modal {
+
+		&__container {
+			 background: $DarcBgColor;
+		}
+
+		& * {
+			color: $DarkTextColor;
+			fill: $DarkTextColor;
+		}
+
+		&__close >svg path {
+			stroke: $DarkTextColor;
 		}
 	}
 }

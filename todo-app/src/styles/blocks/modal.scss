@@ -8,7 +8,11 @@
     align-items: center;
     justify-content: center;
     background: rgba(#000, 0.5);
+    padding: 25px;
 
+    @media (max-width: 500px) {
+        padding: 25px 15px;
+    }
 
     &__container {
         padding: 40px 25px 30px;
@@ -22,6 +26,10 @@
         display: flex;
         flex-direction: column;
         row-gap: 20px;
+
+        @media (max-width: 500px) {
+            padding: 40px 15px 30px;
+        }
     }
 
     &__form-container {
@@ -171,13 +179,9 @@
             left: 0;
         }
 
-        @media (max-width: 500px) {
-            padding: 0 15px;
-        }
-
         @media (max-width: 460px) {
             font-size: 14px;
-            padding: 0 5px;
+            
         }
 
         &:focus::-webkit-input-placeholder {
@@ -290,5 +294,10 @@
 
     &:hover {
         text-decoration: underline;
+    }
+
+    @media (max-width: 500px) {
+        padding: 0 0;
+        align-items: center;
     }
 }

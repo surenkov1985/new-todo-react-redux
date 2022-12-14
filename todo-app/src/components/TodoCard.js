@@ -12,8 +12,6 @@ export const TodoCard = ({ data, deleteCard, cardClick, id, innerRef, provided }
 			ref={innerRef}
 			className="todo__card card"
 			onClick={() => cardClick(data)}
-			// onDragStart={(e) => dragStartHandler(data, id)} 
-			// draggable
 		>
 			<h2 className="card__title">{data.title}</h2>
 			<div className="card__description">{data.description && <p className="card__text">{data.description}</p>}</div>

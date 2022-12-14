@@ -69,16 +69,7 @@ export default function Project() {
 		}
 	}, [selectedProject]);
 
-	const onDragStart = (res) => {
-		/*...*/
-	};
-	const onDragUpdate = (res) => {
-		const { source, destination, draggableId } = res;
-		let pushData = filteredTasks.find((task) => task.id === draggableId);
-		let newData = filteredTasks.filter(task => task.status.text === pushData.status.text)[destination.index];
-		pushData = { ...pushData, priority: newData.priority };
-		dispatch(updateTask({ id: pushData.id, obj: pushData }));
-	};
+	
 	const onDragEnd = (res) => {
 		console.log(res);
 		const { source, destination, draggableId } = res;
@@ -94,7 +85,7 @@ export default function Project() {
 	console.log(filteredTasks);
 
 	return (
-		<DragDropContext onDragStart={onDragStart} onDragUpdate={onDragUpdate} onDragEnd={onDragEnd}>
+		<DragDropContext onDragEnd={onDragEnd}>
 			<div className="todo__main">
 				<div className="todo__title-control">
 					<h1 className="todo__title">{selectedProject?.title}</h1>
@@ -105,7 +96,7 @@ export default function Project() {
 					{selectedProject &&
 						selectedProject.statuses?.map((status) => {
 							return (
-								<Droppable droppableId={status.text} key={status.text} direction="vertical">
+								<Droppable droppableId={status.text} key={status.text}>
 									{(provided) => (
 										<div ref={provided.innerRef} className="todo__create status" {...provided.droppableProps}>
 											<h2 className="status__title">{status.text}</h2>
