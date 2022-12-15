@@ -17,45 +17,19 @@ import { Comments } from "./Comments";
 import { CheckItem, Comment } from "../models";
 import Button from "./Button";
 
-export const AddCard = ({ obj, closeModal, statuses, priorities }) => {
-	const dispatch = useDispatch();
-	const { user } = useSelector((state) => state.projectsReducer);
-	const task = useSelector((state) => {
-		const { projectsReducer } = state;
-		return projectsReducer.selectedProject.tasks.find((task) => task.id === obj.id);
-	});
+// Рассчет разницы во времени и перевод разницы в строку
 
-	const setTimeString = () => {
-		let time = Math.floor((dayjs().valueOf() - task.date) / 1000);
-		let day = Math.floor(time / (24 * 60 * 60)) ? `${Math.floor(time / (24 * 60 * 60))} day ` : "";
-		let hour = Math.floor((time % (24 * 60 * 60)) / (60 * 60)) ? `${Math.floor((time % (24 * 60 * 60)) / (60 * 60))} hour ` : "";
-		let min = Math.floor(((time % (24 * 60 * 60)) % (60 * 60)) / 60) ? `${Math.floor(((time % (24 * 60 * 60)) % (60 * 60)) / 60)} min` : "";
+const setTimeString = (date) => {
+	const time = Math.floor((dayjs().valueOf() - date) / 1000);
 
-		return day + hour + min;
-	};
+	const day = Math.floor(time / (24 * 60 * 60)) ? `${Math.floor(time / (24 * 60 * 60))} day ` : "";
+	const hour = Math.floor((time % (24 * 60 * 60)) / (60 * 60)) ? `${Math.floor((time % (24 * 60 * 60)) / (60 * 60))} hour ` : "";
+	const min = Math.floor(((time % (24 * 60 * 60)) % (60 * 60)) / 60) ? `${Math.floor(((time % (24 * 60 * 60)) % (60 * 60)) / 60)} min` : "";
 
-	const [pushData, setPushData] = useState(null);
-	const [error, setError] = useState("");
-	const [isCreate, setIsCreate] = useState(false);
-	const [checkNameCreate, setCheckNameCreate] = useState(task.checkListName ? true : false);
-	const [leadTime, setLeadTime] = useState(setTimeString);
-	let leadTimeInterval;
+	return day + hour + min;
+};
 
-	
-
-	useEffect(() => {
-		leadTimeInterval = setInterval(() => {
-			setLeadTime(setTimeString);
-		}, 300 * 1000);
-	}, []);
-
-	const CloseModalHandler = () => {
-		closeModal();
-		clearInterval(leadTimeInterval);
-		setLeadTime("");
-	};
-
-	// Функция добавления древовидных комментариев
+// Функция добавления древовидных комментариев
 
 	const arriterator = (arr, obj, val) => {
 		if (arr && arr.length !== 0) {
@@ -72,6 +46,39 @@ export const AddCard = ({ obj, closeModal, statuses, priorities }) => {
 		}
 
 		return arr;
+	};
+	let leadTimeInterval;
+
+
+export const AddCard = ({ obj, closeModal, statuses, priorities }) => {
+	const dispatch = useDispatch();
+	const { user } = useSelector((state) => state.projectsReducer);
+	const task = useSelector((state) => {
+		const { projectsReducer } = state;
+		return projectsReducer.selectedProject.tasks.find((task) => task.id === obj.id);
+	});
+	
+	const [pushData, setPushData] = useState(null);
+	const [error, setError] = useState("");
+	const [isCreate, setIsCreate] = useState(false);
+	const [checkNameCreate, setCheckNameCreate] = useState(task.checkListName ? true : false);
+	const [leadTime, setLeadTime] = useState(setTimeString(task.date));
+	
+
+	// запуск таймера при первой загрузке модального окна, задает время выполнения задачи каждые 5 минут
+	
+	useEffect(() => {
+		leadTimeInterval = setInterval(() => {
+			setLeadTime(setTimeString(task.date));
+		}, 300 * 1000);
+	}, []);
+
+	// Закрытие модального окна (отключает таймер, сбрасывает значение времени)
+
+	const CloseModalHandler = () => {
+		closeModal();
+		clearInterval(leadTimeInterval);
+		setLeadTime("");
 	};
 
 	// Добавление задачи с чек-лист

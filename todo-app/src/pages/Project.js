@@ -69,20 +69,15 @@ export default function Project() {
 		}
 	}, [selectedProject]);
 
-	
 	const onDragEnd = (res) => {
-		console.log(res);
 		const { source, destination, draggableId } = res;
-		const pushData = filteredTasks.find((task) => task.id === draggableId);
+		let pushData = filteredTasks.find((task) => task.id === draggableId);
 
 		if (destination.droppableId !== source.droppableId) {
-			
-			pushData.status.text = destination.droppableId;
+			pushData = { ...pushData, status: { text: destination.droppableId } };
 			dispatch(updateTask({ id: pushData.id, obj: pushData }));
 		}
 	};
-
-	console.log(filteredTasks);
 
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import NotFound from "./pages/NotFound";
 import Project from "./pages/Project";
@@ -34,7 +34,7 @@ function App() {
 	}, [selectedProject]);
 
 	return (
-		<BrowserRouter>
+		<HashRouter>
 			<Routes>
 				<Route path="/" element={<Layout />}>
 					<Route path="select_project" element={<SelectProject />} />
@@ -42,7 +42,7 @@ function App() {
 					<Route path="*" element={<NotFound />} />
 				</Route>
 			</Routes>
-		</BrowserRouter>
+		</HashRouter>
 	);
 }
 

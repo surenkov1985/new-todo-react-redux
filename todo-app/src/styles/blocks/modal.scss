@@ -57,6 +57,7 @@
     }
 
     &__text {
+        font-size: 18px;
         word-break: break-all;
     }
 
@@ -181,7 +182,7 @@
 
         @media (max-width: 460px) {
             font-size: 14px;
-            
+
         }
 
         &:focus::-webkit-input-placeholder {

@@ -6,9 +6,8 @@ import { ListCreate } from "./ListCreate";
 
 export const CommentBlock = ({ data, commHandler, buttonHandler }) => {
 	const [isReply, setIsReply] = useState(false);
-	const [obj, setObj] = useState(data);
 	const pushSubComments = (comm, subComm) => {
-		commHandler(obj, subComm);
+		commHandler(data, subComm);
 
 		setIsReply(false);
 	};
@@ -16,16 +15,18 @@ export const CommentBlock = ({ data, commHandler, buttonHandler }) => {
 	const replyCommentHandler = () => {
 		buttonHandler(data);
 		setIsReply(true);
-	}
+	};
 
 	return (
 		<>
 			<div>
 				<span>{data.user}</span> - <span className="modal__date">{dayjs(data.date).locale("en").format("YYYY-MM-DD HH:mm")}</span>
 			</div>
-			<div>{data.text}</div>
+			<div className="modal__text">{data.text}</div>
 			<div>
-				<Button classList={[""]} onClick={replyCommentHandler}>reply</Button>
+				<Button classList={["modal__state-btn"]} onClick={replyCommentHandler}>
+					reply
+				</Button>
 				{isReply && <ListCreate focus={true} pushListHandler={pushSubComments} name="subComments" />}
 			</div>
 		</>
